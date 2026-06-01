@@ -1,0 +1,48 @@
+# ---- .NET / MAUI / Android build outputs ----
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+artifacts/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+.idea/
+*.binlog
+
+# ---- Android ----
+*.apk
+*.aab
+*.keystore
+*.jks
+local.properties
+gen/
+.gradle/
+
+# ---- Proprietary / never commit ----
+# Oodle Network native libs are NOT redistributable — keep out of the repo.
+**/oodle-network*.so
+**/oodle-network*.dll
+**/liboo2net*.so
+**/*oodle*.bin
+
+# ---- Secrets / per-user config ----
+*.env
+.env*
+secrets.json
+appsettings.*.local.json
+fflogs.credentials.json
+
+# ---- Captured game data (privacy: contains contentID/character names) ----
+captures/
+*.pcap
+*.pcapng
+Network_*.log
+golden-traces/*.raw
+
+# ---- OS / misc ----
+.DS_Store
+Thumbs.db
+*.log
+!docs/**/*.md
