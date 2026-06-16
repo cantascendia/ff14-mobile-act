@@ -27,6 +27,13 @@ gen/
 **/liboo2net*.so
 **/*oodle*.bin
 
+# ---- Cloned upstreams (clone per docs/m0-runbook.md §1; don't vendor) ----
+external/
+
+# ---- Per-patch deobfuscation tables (extracted from ffxiv_dx11.exe; not ours) ----
+tables/
+*.deobf-table
+
 # ---- Secrets / per-user config ----
 *.env
 .env*

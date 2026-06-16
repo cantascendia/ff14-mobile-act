@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    自己完结的「理论检证」harness。
+    依赖: 仅 BCL(无 NuGet/无 Oodle/无 Machina) → 离线可 build & run。
+    目的: 把【不依赖专有二进制/硬件】的全部链路用合成数据端到端跑通并断言,
+          让仅剩未证链路收敛到 docs 记录的两个硬件闸门(Oodle 原生 / 物理傍受)。
+    与 Ff14Act.M0 的关系: M0 是【实机捕获】入口(需 Oodle+pcap+实机,此处不跑);
+                          本项目是【理论验证】(此处可跑,证明软件链成立)。
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Ff14Act.TheoryTest</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+</Project>

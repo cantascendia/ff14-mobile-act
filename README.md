@@ -46,7 +46,8 @@ PS5 (手动DNS = 手机静态IP)
 
 | 平台 | 角色 | 可行性 |
 |---|---|---|
-| 安卓手机 | DNS + 代理 + 解码 + overlay 服务端 | ✅ 主方案（无 root） |
+| **PC（串接）** | 抓包 + 解码 + overlay 服务端 | ✅ **最易落地**：全栈原生 C#，零移植；L2 网桥免 DNS 詐称/免 NAT。建议先在此跑通 [M0](docs/m0-runbook.md)（见 [alt-pc-bridge.md](docs/alt-pc-bridge.md)） |
+| 安卓手机 | DNS + 代理 + 解码 + overlay 服务端 | ⚠️ 主方案但**「无 root」存疑**：`bind UDP/53` 与 tethered 流量傍受在 stock Android 几乎确定需 root（[详见分析](docs/design.md)）。如非手机单机不可，建议先用 PC 验证机制 |
 | iOS | 仅浏览器看板（连安卓机的 WS） | ❌ 不能当服务端（后台不让常驻监听 socket） |
 | PS5 | 游戏客户端，仅改 DNS | ✅ |
 | NS2(Switch 2) | 同 PS5（封闭、只能串接） | 🔜 上线后按同骨架适配 |
@@ -70,7 +71,10 @@ PS5 (手动DNS = 手机静态IP)
 
 ## 路线图
 
-- [ ] **M0 — 生死证明**：手机 DNS + LobbyProxy 让 PS5 真正登入游戏世界；ZoneProxy 中继 + ARM64 Oodle 解压 + 去混淆 → 解出至少一个 `ActionEffect`(type 21)。
+> **先做 [M0 实战 Runbook](docs/m0-runbook.md)**（PC 上离线验证「PS5 流能否解出」）——这是 PC 版/手机版共同的命门，最便宜、最先验。代码足场：[`src/Ff14Act.M0/`](src/Ff14Act.M0/)。
+
+- [x] **理论验证（软件链）** — 去混淆可逆性+网络可重建性、ActionEffect 解析、ACT type 21 日志行、OverlayPlugin WS（真实 ClientWebSocket 收到 LogLine+CombatData）**端到端测试全 PASS**。仅剩两个硬件闸门（Oodle-ARM64 / 物理傍受 root）。见 [theory-test-results.md](docs/theory-test-results.md)，代码 [`src/Ff14Act.TheoryTest/`](src/Ff14Act.TheoryTest/)（`dotnet run` 可复现）。
+- [ ] **M0 — 生死证明**：在 **PC** 上离线把一段 PS5 zone pcap 经 Machina(Oodle 解压) + Unscrambler(去混淆) + FFXIVOpcodes → 解出至少一个 `ActionEffect`。通过 = 全项目机制被证实，且 PC 版个人自用雏形已成。手机单机版的 ARM64 Oodle / DNS 改写只在「非手机不可」时才碰。
 - [ ] **M1** — opcode→日志行投影（21/22/26/30/00）+ 写 `Network_*.log` + 手机内 overlay。
 - [ ] **M2** — PC 浏览器 cactbot 零改动直连 + 每补丁“金标 trace”校验徽章。
 - [ ] **M3** — FFLogs 文件法直传（live-log）。

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    M0 离线解码验证 harness。
+    目标平台：net8.0-windows（Machina + Oodle native 是 Windows/x64）。
+    需 x64：oodle-network-shared.dll 是 x64，进程位数必须匹配。
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- pcap 离线读取 + 解析。SharpPcap 走 Npcap；PacketDotNet 解 Ethernet/IP/TCP。 -->
+    <PackageReference Include="SharpPcap" Version="6.3.0" />
+    <PackageReference Include="PacketDotNet" Version="1.4.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Machina：TCP 重组 + FFXIV bundle 解帧 + Oodle 解压封装。
+      用项目引用锁定一个你验证过的 commit（去混淆赛道每补丁碎，纪律=锁版本）。
+      路径按 external/ 下实际克隆位置调整；Machina 解决方案里核心是 Machina.FFXIV。
+    -->
+    <ProjectReference Include="..\..\external\machina\Machina.FFXIV\Machina.FFXIV.csproj" />
+    <!-- TODO: 去混淆。Unscrambler 当前是可执行/库混合，按需引用其去混淆核心：
+         <ProjectReference Include="..\..\external\Unscrambler\Unscrambler\Unscrambler.csproj" /> -->
+  </ItemGroup>
+
+</Project>
